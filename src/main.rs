@@ -1,4 +1,5 @@
 #![allow(unused_imports)]
+use std::io::{prelude::*, BufReader};
 use std::net::{TcpListener, TcpStream};
 
 fn main() {
@@ -9,6 +10,10 @@ fn main() {
     }
 }
 
-fn handle_client(_stream: TcpStream) {
+fn handle_client(mut stream: TcpStream) {
     println!("accepted new connection!");
+
+    stream
+        .write_all(b"+PONG\r\n")
+        .expect("Failed to send a message");
 }
