@@ -2,12 +2,19 @@
 use std::io::{prelude::*, BufReader};
 use std::net::{TcpListener, TcpStream};
 use std::str::from_utf8;
+use std::thread;
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:6379").expect("Failed to bind to port 6379");
 
-    for stream in listener.incoming() {
-        handle_client(stream.expect("Failed to accept incoming connection"));
+    loop {
+        let (socket, _) = listener
+            .accept()
+            .expect("Failed to accept incoming connection");
+
+        thread::spawn(|| {
+            handle_client(socket);
+        });
     }
 }
 
