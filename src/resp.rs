@@ -57,3 +57,16 @@ pub fn parse_resp_array(data: Cow<'_, str>) -> Result<Vec<String>, ParseError> {
 
     Ok(result)
 }
+
+pub fn encode_bulk_string(data: String) -> String {
+    let length = data.len();
+
+    let mut str = String::new();
+    str.push_str("$");
+    str.push_str(&length.to_string());
+    str.push_str("\r\n");
+    str.push_str(&data);
+    str.push_str("\r\n");
+
+    str
+}
